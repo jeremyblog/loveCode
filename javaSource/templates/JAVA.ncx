@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns:mbp="http://mobipocket.com/ns/mbp" xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en-GB">
+	<head>
+		<meta content="KindleFere_2015-10-22" name="dtb:uid" />
+		<meta content="2" name="dtb:depth" />
+		<meta content="0" name="dtb:totalPageCount" />
+		<meta content="0" name="dtb:maxPageNumber" />
+	</head>
+	<docTitle>
+		<text>${bookName}</text>
+	</docTitle>
+	<docAuthor>
+		<text>jeremy huang</text>
+	</docAuthor>
+	<navMap>
+		<navPoint class="toc" id="toc" playOrder="1">
+	        <navLabel>
+	            <text>Table of Contents</text>
+	        </navLabel>
+	        <content src="toc.html"/>
+	    </navPoint>
+		${ncxchaters}
+		<navPoint class="appendix" id="appendix" playOrder="10000">
+      <navLabel>
+        <text>Appendix: Specifications</text>
+      </navLabel>
+      <content src="Specifications.html"/>
+    </navPoint>
+	</navMap>
+</ncx>
