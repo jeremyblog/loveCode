@@ -27,19 +27,33 @@ public class MethodHrefBeta {
 	final HashMap<String, ArrayList<MethodInvocation>> invocationsForMethods = new HashMap<String, ArrayList<MethodInvocation>>();
 	private final String path;
 	private final CompilationUnit result;
+	public final IPackage p;
+	public final IClass c;
+	public final List<IMethod> methods;
 
 	public MethodHrefBeta(String path) throws Exception {
 		this.path = path;
 		this.result = getCompilationUnit();
+		p = getPackageName();
+		c = getClassName();
+		methods = getMethods();
 	}
 
-	public IPackage getPackageName() {
+	public IPackage getP() {
+		return p;
+	}
+
+	public IClass getC() {
+		return c;
+	}
+
+	private IPackage getPackageName() {
 		IPackage p = new IPackage();
 		p.setName(result.getPackage().getName().toString());
 		return p;
 	}
 
-	public List<IMethod> getMethods(){
+	private List<IMethod> getMethods(){
 		List<IMethod> resultList = new ArrayList<IMethod>();
 		TypeDeclaration type = (TypeDeclaration) result.types().get(0);
 		MethodDeclaration[] methodList = type.getMethods();// 获取方法的注释以及方法体
@@ -77,14 +91,14 @@ public class MethodHrefBeta {
 		return false;
 	}
 	
-	public IClass getClassName(){
+	private IClass getClassName(){
 		String[] result = path.split("\\\\");
 		IClass c = new IClass();
 		c.setName(result[result.length -1]);
 		return c;
 	}
 	
-	public Map<Integer,JavaHref> getJavaHrefs(List<IMethod> methods){
+	public Map<Integer,JavaHref> getJavaHrefs(){
 		Map<Integer,JavaHref> resultList = new HashMap<Integer,JavaHref>();
 		for(IMethod m : methods) {
 			JavaHref h1 = new JavaHref();
@@ -147,7 +161,7 @@ public class MethodHrefBeta {
 					System.out.println("it call " + ic.name + " in " + ic.startLine);
 				}
 			}*/
-			Map<Integer,JavaHref> result = m.getJavaHrefs(m.getMethods());
+			Map<Integer,JavaHref> result = m.getJavaHrefs();
 			for( int l : result.keySet()){
 				JavaHref h = result.get(l);
 				System.out.println(h.name + " is " + h.type + " in line " +l );

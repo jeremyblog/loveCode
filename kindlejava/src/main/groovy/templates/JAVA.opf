@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="BookId">
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf" >
+	<dc:title>${bookName}</dc:title>
+	<dc:language>en-us</dc:language>
+	<dc:creator>jeremy huang</dc:creator>
+	<dc:publisher>jeremyblog.github.io</dc:publisher>
+	<dc:subject>source</dc:subject> 
+	<dc:date>2016-10-28</dc:date> 
+	<dc:description>help you to read source by kindle</dc:description> 
+</metadata>
+
+<manifest>
+	${items}
+	<item id="tocid" media-type="application/xhtml+xml" href="toc.html"></item>
+	<item id="My_Table_of_Contents" media-type="application/x-dtbncx+xml" href="JAVA.ncx"/>
+	<item id="itemSpecial" media-type="application/xhtml+xml" href="Specifications.html"></item>
+</manifest>
+<spine toc="My_Table_of_Contents">
+	<itemref idref="tocid"/>
+	${spines}
+	<itemref idref="itemSpecial"/>
+</spine>
+<guide>
+	<reference type="toc" title="Table of Contents" href="toc.html"></reference>
+</guide>
+</package>
