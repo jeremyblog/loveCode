@@ -50,9 +50,10 @@ public class App {
 		// 获取第一行的内
 
 		for (MethodDeclaration activeMethod : invocationsForMethods.keySet()) {
+			int lineNumber = result.getLineNumber(activeMethod.getStartPosition());
 			for (MethodInvocation method : invocationsForMethods.get(activeMethod)) {
-				System.out.println(activeMethod.getName() + " calls method " + method.getName());
-				System.out.println(method.getName() + " calls method " + method.getParent().toString());
+				int callNumber = result.getLineNumber(method.getStartPosition());
+				System.out.println(activeMethod.getName() + " in " + lineNumber + " calls method " + method.getName() +" in " + callNumber);
 			}
 		}
 	}
