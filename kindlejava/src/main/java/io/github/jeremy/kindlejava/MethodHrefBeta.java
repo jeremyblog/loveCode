@@ -67,6 +67,9 @@ public class MethodHrefBeta {
 		}
 		
 		for(IMethod m : resultList) {
+			if(invocationsForMethods.get(m.name) == null) {
+				continue;
+			}
 			for(MethodInvocation i : invocationsForMethods.get(m.name)){
 				List<ICalled> calleds = new ArrayList<ICalled>();
 				if(selfMethod(resultList, i.getName().toString())) {
@@ -105,6 +108,9 @@ public class MethodHrefBeta {
 			h1.type = 0;
 			h1.name = m.name;
 			resultList.put(m.startLine, h1);
+			if(m.calleds == null) {
+				continue;
+			}
 			for(ICalled ic : m.calleds) {
 				JavaHref h2 = new JavaHref();
 				h2.type = 1;

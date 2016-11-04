@@ -7,51 +7,58 @@ import groovy.io.FileType
 
 PACKAGESYMBOL = "."
 
-createDir("target")
-createDir("target/html")
+def createHtml(pwd1, output, p_name, c_name, file, hrefs) {
 
-special_symbol = [:]
-special_symbol = specialSybmbol()
+	createDir(output + "target")
+	createDir(output + "target/html")
 
-def Main(pwd, output){
-	return pwd + ' , ' + output
-}
-
-def createHtml(pwd, output, p_name, c_name, package_class_map, file, hrefs) {
 	def strbuf = new StringBuffer()
 	def import_beizhu = new StringBuffer()
+	special_symbol = specialSybmbol()
 	
 	TemplateEngine engine = new SimpleTemplateEngine()
-	template = engine.createTemplate(new File(pwd + "templates/html-content.tl"))
+	template = engine.createTemplate(new File(pwd1 + "templates/html-content.tl"))
 
 	i = 1;
-	new File(file).eachLine("utf8") {
+	new File(file).eachLine("utf8") {		
 		//add 2016.10.29 remove import
 		if(it.startsWith("import")) {
 			import_beizhu.append(template.make(content:it).toString())
 			import_beizhu.append("\n")
 		} else {
-			strbuf.append(template.make(content:doWithSpecial(special_symbol,it)).toString())
+			def content = doWithSpecial(special_symbol,it)
+			if(hrefs.get(i)) {
+				content = makeMethodHref(content, hrefs.get(i).type,hrefs.get(i).name)
+			}
+			strbuf.append(template.make(content:content).toString())
 			strbuf.append("\n")
-		}
-		if(hrefs.get(i)) {
-			print(i)
-			print(hrefs.get(i).name)
-		}
+		}		
 		i++
 	}
+
 	//add 2016.10.29 remove import
 	strbuf.append("\n")
 	strbuf.append('<p height=\"1em\" width=\"0\"><span id=\"zhu_import\">[import]</span></p>\n' + import_beizhu.toString())
 	def content = '<sup><a href=\"#zhu_import\">[import]</a></sup>\n' + strbuf.toString()
 
-	template = engine.createTemplate(new File("templates/JAVA.html"))
+	template = engine.createTemplate(new File(pwd1 + "templates/JAVA.html"))
 	Writable result  = template.make(content:content,name:c_name)
 
-	html =  output + 'target/' +  makeHtmlHref(packageName, c_name, null);
+	html =  output + 'target/' +  makeHtmlHref(p_name, c_name, null);
 	new File(html.toString()).withWriter('utf-8'){
 		writer -> result.writeTo(writer)
 	}
+}
+
+def makeMethodHref(content,type,methodName){
+	//caller
+	if(type == 0) {
+		content = '<a href=\"#' + methodName +'\">' +  '</a>'
+	}
+	else if(type == 1) {
+		content = '<div id=\"' + methodName + '\"></div>'
+	}
+	return content;
 }
 
 //sort
@@ -66,7 +73,6 @@ def createHtml(pwd, output, p_name, c_name, package_class_map, file, hrefs) {
 
 //copy(pwd,output)
 
-}
 
 def getFileName(n){
 	return n.split(/\.(java|property|xml)/)[0]
