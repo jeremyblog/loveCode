@@ -55,6 +55,9 @@ public class MethodHrefBeta {
 
 	private List<IMethod> getMethods(){
 		List<IMethod> resultList = new ArrayList<IMethod>();
+		if(result.types().size() == 0) {
+			return resultList;
+		}
 		TypeDeclaration type = (TypeDeclaration) result.types().get(0);
 		MethodDeclaration[] methodList = type.getMethods();// 获取方法的注释以及方法体
 		IClass c = getClassName();
@@ -146,6 +149,9 @@ public class MethodHrefBeta {
 
 			@Override
 			public boolean visit(MethodInvocation node) {
+				if(activeMethod == null) {
+					return super.visit(node);
+				}
 				if (invocationsForMethods.get(activeMethod.getName().toString()) == null) {
 					invocationsForMethods.put(activeMethod.getName().toString(), new ArrayList<MethodInvocation>());
 				}

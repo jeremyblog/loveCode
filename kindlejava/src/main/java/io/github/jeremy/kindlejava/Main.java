@@ -10,10 +10,11 @@ import groovy.lang.GroovyObject;
 public class Main {
 	// public static String GROOVY_PATH =
 	// Main.class.getClassLoader().getResource("").getPath() + "main/groovy";
-	public static String GROOVY_PATH = "F:\\workspace\\loveCode\\kindlejava\\src\\main\\groovy\\";
+//	public static String GROOVY_PATH = "F:\\workspace\\loveCode\\kindlejava\\src\\main\\groovy\\";
+	public static String GROOVY_PATH = "F:\\mywork\\source\\loveCode\\kindlejava\\src\\main\\groovy\\";
 
 	public static void main(String[] args) throws Exception {
-		String path = "F:\\source\\test\\";
+		String path = "F:\\mywork\\pubacc2\\app\\";
 		File file = new File(path);
 		createHtml(file);
 	}
@@ -30,7 +31,7 @@ public class Main {
 				Class testGroovyClass = classLoader.parseClass(new GroovyCodeSource(sourceFile));
 				GroovyObject instance = (GroovyObject) testGroovyClass.newInstance();// proxy
 				JavaHref test = new JavaHref();
-				String result = (String) instance.invokeMethod("createHtml",
+				instance.invokeMethod("createHtml",
 						new Object[] { GROOVY_PATH, "F:\\test\\target\\", beta.getP().name, beta.getC().name,
 								f.getAbsolutePath().toString(), hrefs });
 			}

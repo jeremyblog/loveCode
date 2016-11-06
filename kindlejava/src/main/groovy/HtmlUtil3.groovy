@@ -10,27 +10,29 @@ PACKAGESYMBOL = "."
 def createHtml(pwd1, output, p_name, c_name, file, hrefs) {
 
 	createDir(output + "target")
-	createDir(output + "target/html")
+	//createDir(output + "target/html")
 
 	def strbuf = new StringBuffer()
 	def import_beizhu = new StringBuffer()
 	special_symbol = specialSybmbol()
 	
-	TemplateEngine engine = new SimpleTemplateEngine()
-	template = engine.createTemplate(new File(pwd1 + "templates/html-content.tl"))
+	//TemplateEngine engine = new SimpleTemplateEngine()
+	//template = engine.createTemplate(new File(pwd1 + "templates/html-content.tl"))
 
 	i = 1;
 	new File(file).eachLine("utf8") {		
 		//add 2016.10.29 remove import
 		if(it.startsWith("import")) {
-			import_beizhu.append(template.make(content:it).toString())
+			//import_beizhu.append(template.make(content:it).toString())
+			import_beizhu.append(stringFormat(it))
 			import_beizhu.append("\n")
 		} else {
 			def content = doWithSpecial(special_symbol,it)
 			if(hrefs.get(i)) {
 				content = makeMethodHref(content, hrefs.get(i).type,hrefs.get(i).name)
 			}
-			strbuf.append(template.make(content:content).toString())
+			//strbuf.append(template.make(content:content).toString())
+			strbuf.append(stringFormat(content))
 			strbuf.append("\n")
 		}		
 		i++
@@ -41,13 +43,18 @@ def createHtml(pwd1, output, p_name, c_name, file, hrefs) {
 	strbuf.append('<p height=\"1em\" width=\"0\"><span id=\"zhu_import\">[import]</span></p>\n' + import_beizhu.toString())
 	def content = '<sup><a href=\"#zhu_import\">[import]</a></sup>\n' + strbuf.toString()
 
-	template = engine.createTemplate(new File(pwd1 + "templates/JAVA.html"))
+	TemplateEngine engine = new SimpleTemplateEngine()
+	def template = engine.createTemplate(new File(pwd1 + "templates/JAVA.html"))
 	Writable result  = template.make(content:content,name:c_name)
 
 	html =  output + 'target/' +  makeHtmlHref(p_name, c_name, null);
 	new File(html.toString()).withWriter('utf-8'){
 		writer -> result.writeTo(writer)
 	}
+}
+
+def stringFormat(c){
+	return '<p height=\"1em\" width=\"0\">' + c +'</p>';
 }
 
 def makeMethodHref(content,type,methodName){

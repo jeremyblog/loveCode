@@ -18,7 +18,7 @@ createDir("target/html")
 
 def pwd = ""
 def output = ""
-def project = "solr"
+def project = "pubacc"
 
 def special_symbol = [:]
 special_symbol = specialSybmbol()
@@ -39,13 +39,15 @@ new File(sources).traverse(type:FileType.FILES,
 	if(it.isFile()) {
 		def line = 0;
 		it.eachLine("utf8"){
-			template = engine.createTemplate(new File(pwd + "templates/html-content.tl"))
+			//template = engine.createTemplate(new File(pwd + "templates/html-content.tl"))
 			//add 2016.10.29 remove import
 			if(it.startsWith("import")) {
-				import_beizhu.append(template.make(content:it).toString())
+				//import_beizhu.append(template.make(content:it).toString())
+				import_beizhu.append(stringFormat(it))
 				import_beizhu.append("\n")
 			} else {
-				strbuf.append(template.make(content:doWithSpecial(special_symbol,it)).toString())
+				///strbuf.append(template.make(content:doWithSpecial(special_symbol,it)).toString())
+				strbuf.append(stringFormat(doWithSpecial(special_symbol,it)))
 				strbuf.append("\n")
 			}
 		}
@@ -84,6 +86,10 @@ createToc(pwd,output, package_list, package_class_map,class_method_map)
 createNCX(pwd, output, package_list, package_class_map,project)
 
 copy(pwd,output)
+
+def stringFormat(c){
+	return '<p height=\"1em\" width=\"0\">' + c +'</p>';
+}
 
 def getFileName(n){
 	return n.split(/\.(java|property|xml)/)[0]
@@ -150,7 +156,7 @@ def createNCX(pwd, output, package_list, package_class_map,bookName) {
 	def n = 2
 	def i = 1
 	package_list.each {
-		print(it+"\n")
+		//print(it+"\n")
 		packageName = it
 		cNum = n
 		def ncxsetions = new StringBuilder()
@@ -255,6 +261,7 @@ def specialSybmbol(){
 	result = [:]
 	result.put("<","&lt;")
 	result.put(" ","&nbsp;")
+	result.put("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
 
 	return result
 }
