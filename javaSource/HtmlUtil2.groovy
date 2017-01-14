@@ -18,7 +18,7 @@ createDir("target/html")
 
 def pwd = ""
 def output = ""
-def project = "pubacc"
+def project = "hankcs-src"
 
 def special_symbol = [:]
 special_symbol = specialSybmbol()
